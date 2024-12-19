@@ -9,6 +9,12 @@ import static java.nio.file.StandardOpenOption.CREATE;
 public class  ReadingFiles {
     //need to add the "throws IOException" after typical main phrase
     public static void main(String[] args) throws IOException   {
+        //Variables
+        int lineCount = 0;
+        int spacesCount = 0;
+        int wordCount = 0;
+        int characterCount = 0;
+
 
         //Creates a JFileChooser object that will open the JFileChooser Wizard GUI
         //Allows user to search for files that they want read by the program
@@ -57,11 +63,33 @@ public class  ReadingFiles {
                 while (reader.ready()) {
                     rec = reader.readLine();
                     line++;
+
+                    lineCount++;
+                    characterCount += rec.length();
+                    
+                    boolean spaceLastChar = true;
+                    for (int i = 0; i < rec.length(); i++) {    //this all ensures that all words are counted towards word count and all spaces (including double or more spaces) count in space count
+                        if (rec.substring(i, (i + 1)).equals(" ")) {
+                            spacesCount++;
+                            spaceLastChar = true;
+                        } else if (spaceLastChar) {
+                            wordCount++;
+                            spaceLastChar = false;
+                        }
+                    }
+
                     //Prints the line # and the contents of the line
                     System.out.printf("\nLine%4d: %-60s ", line, rec);
                 }
                 reader.close(); // must close the file to seal it and clear buffer
                 System.out.println("\n\nData file read!"); //Success message
+
+                //File Summary
+                System.out.println("\nFile Summary");
+                System.out.println("Number of Lines: " + lineCount);
+                System.out.println("Number of Spaces: " + spacesCount);
+                System.out.println("Number of Words: " + wordCount);
+                System.out.println("Number of Characters: " + characterCount);
 
                  /*
                     This is where the program stops displaying the read file to the user
